@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const DeviceTypeUnidentified = "Unidentified"
+
 type Flags struct {
 	Browser bool
 	Device  bool
@@ -103,7 +105,7 @@ func (udger *Udger) Lookup(ua string) (*Info, error) {
 		} else {
 			//nothing so personal computer
 			info.Device = Device{
-				Name: "Unidentified",
+				Name: DeviceTypeUnidentified,
 				Icon: "unidentified.png",
 			}
 		}
