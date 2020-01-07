@@ -8,8 +8,10 @@ import (
 	"strings"
 )
 
+const DeviceTypeUnidentified = "Unidentified"
+
 type Flags struct {
-	browser bool
+	Browser bool
 	Device  bool
 	os      bool
 }
@@ -19,7 +21,7 @@ type Flags struct {
 func New(dbPath string, flags *Flags) (*Udger, error) {
 	if flags == nil {
 		flags = &Flags{
-			browser: true,
+			Browser: true,
 			Device:  true,
 			os:      true,
 		}
@@ -58,7 +60,7 @@ func (udger *Udger) Lookup(ua string) (*Info, error) {
 	f := udger.Flags
 
 	var browserID int
-	if f.browser {
+	if f.Browser {
 		browserID, version, err := udger.findDataWithVersion(ua, udger.rexBrowsers, true)
 		if err != nil {
 			return nil, err
@@ -103,8 +105,8 @@ func (udger *Udger) Lookup(ua string) (*Info, error) {
 		} else {
 			//nothing so personal computer
 			info.Device = Device{
-				Name: "Personal computer",
-				Icon: "desktop.png",
+				Name: DeviceTypeUnidentified,
+				Icon: "unidentified.png",
 			}
 		}
 	}
@@ -149,7 +151,7 @@ func (udger *Udger) findData(ua string, data []rexData, withVersion bool) (idx i
 
 func (udger *Udger) init() error {
 	f := udger.Flags
-	if f.browser {
+	if f.Browser {
 		if err := udger.initBrowsers(); err != nil {
 			return err
 		}
